@@ -1,0 +1,19 @@
+Google:
+  post:
+    summary: Google Home
+    description: |
+      Google cloud integration endpoint  [Handler](https://github.com/ZolibraBond/bond-integrations-google)
+    security:
+      - bearerAuth: []
+    tags:
+      - Cloud Integrations
+
+SmartThings:
+  post:
+    summary: SmartThings
+    description: |
+      Samsumg Smart Things cloud integration endpoint. [Handler](https://github.com/ZolibraBond/bond-integrations-smartthings)
+    security:
+      - bearerAuth: []
+    tags:
+      - Cloud Integrations

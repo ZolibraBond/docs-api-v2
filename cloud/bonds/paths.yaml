@@ -1,0 +1,241 @@
+Bonds:
+  get:
+    summary: Bonds List
+    description: |
+      Returns a list of Bond shadows owned by the user.
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              owner_id:
+                type: string
+                description: internalAPI  (required) -  User id
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: schemas.yaml#/BondsList
+        description: List of Bond shadows
+      '401':
+        $ref: ../../common/responses.yaml#/Unauthorized
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Bonds
+  post:
+    summary: |
+      Register a Bond
+    description: |
+      **[Internal API]** Triggered by `up/token` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Bond ID
+                example: "AA00001"
+              nonce:
+                $ref: ../../token/schemas.yaml#/TokenGet/properties/nonce
+              token:
+                $ref: ../../token/schemas.yaml#/TokenGet/properties/token
+              account_code:
+                $ref: ../../token/schemas.yaml#/TokenGet/properties/account_code
+      '201':
+        description: Bond Created
+      '400':
+        description: Bad request parameters
+      '403':
+        description: Invalid nonce
+      '404':
+        description: User account not found
+    security:
+      - internalAPI: []
+    tags:
+      - Bonds
+
+
+Bond:
+  get:
+    summary: Get Bond
+    description: |
+      Returns a Bond shadow.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: schemas.yaml#/Bond
+        description: Bond shadow
+      '401':
+        $ref: ../../common/responses.yaml#/Unauthorized
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Bond
+  delete:
+    summary: Delete Bond
+    description: |
+      Deletes the bond and all its information.
+    responses:
+      '204':
+        description: No content
+      '404':
+        description: Bond not found
+      '401':
+        $ref: ../../common/responses.yaml#/Unauthorized
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Bond
+
+
+BondStatus:
+  get:
+    summary: Status
+    description: |
+      Bond MQTT connection status
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: Connection status
+                  example: "connected / disconnected"
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Bond
+
+
+BondSys:
+  post:
+    summary: Sys
+    description: |
+      **[Internal API]** `up/sys` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              hash:
+                type: string
+                description: The `/sys` "_"
+                example: "f649771b"
+      '201':
+        description: Updated
+    security:
+      - internalAPI: []
+    tags:
+      - Bond
+
+
+BondSysVersion:
+  post:
+    summary: Sys Version
+    description: |
+      **[Internal API]** `up/sys/version` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../../firmware/schemas.yaml#/Version"
+      '201':
+        description: Updated
+    security:
+      - internalAPI: []
+    tags:
+      - Bond
+
+
+BondSysTime:
+  get:
+    summary: Sys Time
+    description: |
+      Bond Sys Time shadow
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "../../sys/schemas.yaml#/Time"
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Bond
+  post:
+    summary: Sys Time
+    description: |
+      **[Internal API]** `up/sys/time` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../../sys/schemas.yaml#/Time"
+      '201':
+        description: Updated
+    security:
+      - internalAPI: []
+    tags:
+      - Bond
+
+BondSysWifi:
+  post:
+    summary: Sys Wifi
+    description: |
+      **[Internal API]** `up/sys/wifi` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              hash:
+                type: string
+                description: The `/sys/wifi` "_"
+                example: "f649771b"
+      '201':
+        description: Updated
+    security:
+      - internalAPI: []
+    tags:
+      - Bond
+
+
+BondSysWifiSta:
+  post:
+    summary: Sys Wifi Status
+    description: |
+      **[Internal API]** `up/sys/wifi/sta` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../../network/schemas.yaml#/Sta"
+      '201':
+        description: Updated
+    security:
+      - internalAPI: []
+    tags:
+      - Bond

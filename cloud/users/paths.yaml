@@ -1,0 +1,93 @@
+Users:
+  get:
+    summary: Search User
+    description: |
+      Filter User by email.
+    parameters:
+      - in: query
+        name: email
+        schema:
+          type: string
+          example: "user@docs.com"
+    responses:
+      '200':
+        content:
+          application/json:
+            type: list
+            example:
+              - id: "bfc409a4-ead6-4401-b8fd-dd60ff712d83"
+                email: "user@docs.com"
+                account_code:  "0x0000AA00"
+                name: "John Doe"
+      '404':
+        description: Not found
+    security:
+      - internalAPI: []
+    tags:
+      - User
+
+
+User:
+  get:
+    summary: Get User
+    description: |
+      Retrieves user information
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "../account/schemas.yaml#/UserAccount"
+      '404':
+        description: Not found
+    security:
+      - internalAPI: []
+    tags:
+      - User
+
+UserIntegrations:
+  get:
+    summary: User Integrations
+    description: |
+      Get user integrations. `user` or `bond` required.
+    parameters:
+      - in: query
+        name: user
+        required: false
+        schema:
+          type: string
+          example: "fc409a4-ead6-4401-b8fd-dd60ff712d83"
+          description: User ID
+      - in: query
+        name: bond
+        required: false
+        schema:
+          type: string
+          example: "AA00001"
+          description: Bond ID
+      - in: query
+        name: integration
+        required: false
+        schema:
+          type: string
+          example: "ALEXA"
+          description: Integration Client ID
+    responses:
+      '200':
+        content:
+          application/json:
+            type: list
+            example:
+              - id: "00001"
+                user: "fc409a4-ead6-4401-b8fd-dd60ff712d83"
+                is_active: true
+                integration_client: ALEXA
+                integration_data:
+                  authToken: 1234
+                  refreshToken: 4557
+      '404':
+        description: Not found
+    security:
+      - internalAPI: []
+    tags:
+      - User

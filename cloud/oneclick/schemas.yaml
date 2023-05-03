@@ -1,0 +1,67 @@
+OneclickDetect:
+  type: object
+  properties:
+    raw:
+      type: string
+      description: Raw signal data from Bond recording.
+      example: "0x0000AA00"
+    frequency:
+      $ref: "../../signal/schemas.yaml#/Signal/properties/freq"
+    device_type:
+      $ref: "../../devices/schemas.yaml#/Device/properties/type"
+    command_type:
+      type: string
+      description: Command type recorded on app
+      example: "light_on"
+
+OneclickResponse:
+  type: object
+  properties:
+    raw:
+      type: string
+      description: Raw signal data from Bond recording.
+      example: "0x0000AA00"
+    frequency:
+      $ref: "../../signal/schemas.yaml#/Signal/properties/freq"
+    device_type:
+      $ref: "../../devices/schemas.yaml#/Device/properties/type"
+    command_type:
+      type: string
+      description: Command type recorded on app
+      example: "light_on"
+
+OneclickTestRemote:
+  type: object
+  properties:
+    remote_id:
+      type: string
+      description: Remote template ID
+      example: "A1"
+    state:
+      type: object
+      description: Initial device state
+      example:
+        power: "0"
+        light: "1"
+    panel:
+      type: list
+      description: Remote control panel defined in Lua
+      example:
+        - directive: 'TurnLightOff'
+          control: 'button'
+          feedback: '(state.light==1)'
+          icon: 'light_off'
+          name: 'Light Off'
+        - directive: 'TurnLightOff'
+          control: 'button'
+          feedback: '(state.light==0)'
+          icon: 'light_on'
+          name: 'Light On'
+    info:
+      type: object
+      description: Remote general information
+      example:
+        probability: "0.4"
+        fccid: "1234"
+        manufacturer: "generic"
+        model: "1"

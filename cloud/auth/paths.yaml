@@ -1,0 +1,73 @@
+Oauth2Authorize:
+  get:
+    summary: Oauth2
+    description: |
+      Custom Cognito Oauth2 endpoint. [Handler](https://github.com/ZolibraBond/bond-oauth-client/)
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Auth
+
+ForgotPassword:
+  post:
+    summary: Forgot Password
+    description: |
+      Custom forgot password for handling v1 account migration. [Handler](https://github.com/ZolibraBond/bond-processors/tree/trunk/cognito-processors/cognito-forgot-password)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                description: User email used as username on v1 or v2.
+                example: "user@docs.com"
+    responses:
+      '200':
+        description: Ok. Email with token sent.
+        content:
+          application/json:
+            type: object
+            example:
+                CodeDeliveryDetails:
+                  AttributeName: "EMAIL"
+                  Destination: "u***@d***.com"
+                RequestId: "706e3fa3-7fd8-4d69-95f6-5c25e79419d4"
+      '400':
+        description: User not found.
+        content:
+          application/json:
+            type: object
+            example:
+              Code: "UserNotFoundException"
+              Message: "User not found."
+      '429':
+        description: Too many retries for this email.
+        content:
+          application/json:
+            type: object
+            example:
+              Code: "TooManyRequestsException"
+              Message: "Too many requests."
+
+    tags:
+      - Auth
+
+
+ZendeskJWT:
+  get:
+    summary: Zendesk JWT
+    description: |
+      Downloads a JWT token for Zendesk Integration. [Handler](https://github.com/ZolibraBond/bond-processors/tree/trunk/iot-cert-processors/api-get-user-cert)
+    responses:
+      '200':
+        content:
+          application/json:
+            type: object
+    security:
+      - tokenAuth: []
+    tags:
+      - Auth

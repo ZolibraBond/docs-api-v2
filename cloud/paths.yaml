@@ -1,42 +1,69 @@
-/bonds:
-  get:
-    $ref: ../bonds/paths.yaml#/GetList
+# Account
+/api/account/:
+    $ref: account/paths.yaml#/Account
+/api/account/integrations/:
+    $ref: account/paths.yaml#/AccountIntegrations
+/api/account/mobiles/:
+    $ref: account/paths.yaml#/AccountMobiles
+/api/cert/:
+    $ref: account/paths.yaml#/AccountCert
 
-/v2:
-  get:
-    $ref: ../bonds/paths.yaml#/Get
-  parameters:
-  - in: path
-    name: id
-    required: true
-    schema:
-      type: number
+# Bonds
+/api/bonds/:
+    $ref: bonds/paths.yaml#/Bonds
 
-/devices:
-  get:
-    $ref: ../devices/paths.yaml#/GetList
+# Devices
+/api/bonds/{bond_id}/devices/:
+    $ref: devices/paths.yaml#/BondDevices
+/api/bonds/{bond_id}/devices/sync:
+    $ref: devices/paths.yaml#/BondDevicesSync
+/api/bonds/{bond_id}/devices/{device_id}/:
+    $ref: devices/paths.yaml#/BondDevice
+/api/bonds/{bond_id}/devices/{device_id}/actions/{action}/:
+    $ref: devices/paths.yaml#/BondDeviceAction
+/api/bonds/{bond_id}/devices/{device_id}/state/:
+    $ref: devices/paths.yaml#/BondDeviceState
+/api/bonds/{bond_id}/devices/{device_id}/properties/:
+    $ref: devices/paths.yaml#/BondDeviceProperties
+/api/bonds/{bond_id}/devices/{device_id}/commands/:
+    $ref: devices/paths.yaml#/BondDeviceCommands
+/api/bonds/{bond_id}/devices/{device_id}/commands/sync/:
+    $ref: devices/paths.yaml#/BondDeviceCommandsSync
+/api/bonds/{bond_id}/devices/{device_id}/commands/{sked_id}/:
+    $ref: devices/paths.yaml#/BondDeviceCommandsSync
+/api/bonds/{bond_id}/devices/{device_id}/skeds/:
+    $ref: devices/paths.yaml#/BondDeviceSkeds
+/api/bonds/{bond_id}/devices/{device_id}/skeds/sync/:
+    $ref: devices/paths.yaml#/BondDeviceSkedsSync
+/api/bonds/{bond_id}/devices/{device_id}/skeds/{sked_id}/:
+    $ref: devices/paths.yaml#/BondDeviceSked
 
-/devices/{id}:
-  get:
-    $ref: ../devices/paths.yaml#/Get
-  parameters:
-  - in: path
-    name: id
-    required: true
-    schema:
-      type: number
+# Oneclick
+/api/bonds/{bond_id}/oneclick/detect/:
+    $ref: oneclick/paths.yaml#/Oneclick
+/api/bonds/{bond_id}/oneclick/{device_id}/:
+    $ref: oneclick/paths.yaml#/OneclickRemote
+/api/bonds/{bond_id}/oneclick/{device_id}/actions/{action}:
+    $ref: oneclick/paths.yaml#/OneclickRemoteAction
 
-/devices/{id}/actions/{action}:
-  put:
-    $ref: ../actions/paths.yaml#/Put
-  parameters:
-  - in: path
-    name: id
-    required: true
-    schema:
-      type: number
-  - in: path
-    name: action
-    required: true
-    schema:
-      type: string
+# Users
+/users/:
+    $ref: users/paths.yaml#/Users
+/users/{user_id}/:
+    $ref: users/paths.yaml#/User
+/integrations/:
+    $ref: users/paths.yaml#/UserIntegrations
+
+# Cloud Integrations
+/integrations/google/:
+    $ref: integrations/paths.yaml#/Google
+/integrations/smartthings/:
+    $ref: integrations/paths.yaml#/SmartThings
+
+# Auth
+/oauth2/{path}/:
+    $ref: auth/paths.yaml#/Oauth2Authorize
+/api/auth/forgot/:
+    $ref: auth/paths.yaml#/ForgotPassword
+/internal/zendesk:
+    $ref: auth/paths.yaml#/ZendeskJWT

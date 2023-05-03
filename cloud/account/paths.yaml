@@ -1,0 +1,92 @@
+Account:
+  get:
+    summary: Account Info
+    description: |
+      User account info.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: schemas.yaml#/UserAccount
+      '404':
+        description: Not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Account
+
+AccountIntegrations:
+  get:
+    summary: Account Integrations
+    description: |
+      User account info.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/AccountIntegrations"
+      '404':
+        description: Not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Account
+
+AccountMobiles:
+  get:
+    summary: Mobile Devices
+    description: |
+      User registered mobile devices.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: schemas.yaml#/AccountMobile
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Account
+  post:
+    summary: Register Mobile
+    description: Register a new Mobile Device
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: schemas.yaml#/AccountMobile
+    responses:
+      '200':
+        description: Ok
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Account
+
+AccountCert:
+  get:
+    summary: MQTT Certificate
+    description: |
+      Downloads a certificate for MQTT connection.
+    parameters:
+      - in: query
+        name: pkcs12
+        schema:
+          type: boolean
+          default: false
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+             $ref: schemas.yaml#/AccountCert
+    security:
+      - tokenAuth: []
+    tags:
+      - Account

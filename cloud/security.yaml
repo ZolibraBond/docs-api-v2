@@ -1,0 +1,30 @@
+securitySchemes:
+  tokenAuth:
+    description: |
+      OAuth2 JWT token used by the apps.
+      ```Authorization: Token <>```
+      
+    type: oauth2
+    flows:
+      clientCredentials: 
+        tokenUrl: https://bond-api-test.auth.us-east-1.amazoncognito.com/oauth2/token
+        scopes: 
+
+  bearerAuth:
+    description: |
+      OAuth2 JWT token used by the integrations.
+      ```Authorization: Bearer <>```
+    type: oauth2
+    flows:
+      authorizationCode:
+        tokenUrl: https://bond-api-test.auth.us-east-1.amazoncognito.com/oauth2/token
+        authorizationUrl: https://bond-api-test.auth.us-east-1.amazoncognito.com/oauth2/authorize
+        scopes: 
+
+  internalAPI:
+    description: |
+      Closed services API  
+      Internal VPC communication only.  
+      Requires valid header  `x-bond-api-token`.
+    type: http
+    scheme: x-bond-api-token

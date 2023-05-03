@@ -1,0 +1,45 @@
+BondsList:
+  type: object
+  properties:
+    AA00001:
+      $ref: "#/Bond"
+
+
+Bond:
+  type: object
+  properties:
+    id:
+      type: string
+      example: "AA00001"
+    owner:
+      type: string
+      example: "3753ec76-1d6d-407f-aab4-441883da5686"
+    token:
+      type: string
+      example: "37441883da5686"
+    sys:
+      $ref: "#/BondSysExpanded"
+    bridge:
+      $ref: "../../bridge/schemas.yaml#/Bridge"
+    devices:
+      $ref: "../devices/schemas.yaml#/DeviceExpandedList"
+
+
+BondSysExpanded:
+  type: object
+  properties:
+    _:
+      type: string
+      example: "abdde9c1"
+    wifi:
+      type: object
+      properties:
+        _:
+          type: string
+          example: "fbdde9c0"
+        sta:
+          $ref: "../../network/schemas.yaml#/Sta"
+    version:
+      $ref: "../../firmware/schemas.yaml#/Version"
+    time:
+      $ref: "../../sys/schemas.yaml#/Time"
