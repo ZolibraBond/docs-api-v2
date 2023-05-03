@@ -1,3 +1,9 @@
 ---
-- url: https://api.bondhome.io
-  description: Cloud API
+- url: https://xd27596oej.execute-api.us-east-1.amazonaws.com/v2/
+  description: |
+    **Cloud API:** The endpoints exposed to the internet.  
+
+
+- url: http://nlb-bond-v2-api-ec09574b2a7dbfdd.elb.us-east-1.amazonaws.com:8080/
+  description: |
+    **Internal API:** Accessible only inside VPC with API Token

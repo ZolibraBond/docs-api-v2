@@ -1,0 +1,80 @@
+UserAccount:
+  type: object
+  properties:
+    id:
+      type: string
+      description: User unique AWS Cognito id.
+      example: "bfc409a4-ead6-4401-b8fd-dd60ff712d83"
+    email:
+      type: string
+      description: User email.
+      example: "user@docs.com"
+    account_code:
+      type: string
+      description: Account code. Used by the Bond `up/token` for ownership setup.
+      example: "0x0000AA00"
+    name:
+      type: string
+      description: User name.
+      example: "John Doe"
+
+
+AccountIntegrations:
+  type: list
+  example:
+    - id: ALEXA
+      label: "Alexa"
+      url: "alexa.amazon.com/skills/bond"
+      integration:
+        is_active: true
+    - id: GOOGLE
+      label: "Google Home"
+      url: "google.com/home/bond"
+      integration:
+        is_active: false
+    - id: SMARTTHINGS
+      label: "Smart Things"
+      url: "st.samsumg.com/skills/bond"
+      integration:
+        is_active: true
+
+
+AccountMobile:
+  type: object
+  properties:
+    id:
+      readOnly: true
+      type: string
+      description: Random id.
+      example: "bfc409a4-ead6-4401-b8fd-dd60ff712d83"
+    fcm_registration_token:
+      type: string
+      description: Firebase Cloud Messaging ID.
+      example: "ead64405b8fddd60ff712d"
+    manufacturer:
+      type: string
+      description: Device Manufacturer.
+      example: "Apple"
+    model:
+      type: string
+      description: Device Model.
+      example: "iPhone10,5"
+
+AccountCert:
+  type: object
+  properties:
+    user_crt:
+      type: string
+      description: User certificate.
+    user_key:
+      type: string
+      description: User private key.
+    pkcs12:
+      type: string
+      description: Certificate in pkcs12 format, if present in query.
+    ca_crt:
+      type: string
+      description: Certificate Authority public key
+    certificate_id:
+      type: string
+      description: Internal random unique id

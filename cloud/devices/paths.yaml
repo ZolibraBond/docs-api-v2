@@ -1,0 +1,474 @@
+BondDevices:
+  get:
+    summary: Devices List
+    description: |
+      Returns a list of Bond devices.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: schemas.yaml#/DeviceExpandedList
+        description: Bond Devices
+      '401':
+        $ref: ../../common/responses.yaml#/Unauthorized
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Devices
+  post:
+    summary: |
+      Register a Device
+    description: |
+      **[Internal API]** Triggered by `up/devices/{device_id}/` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              device_id:
+                type: string
+                description: Device ID
+                example: "3b20f300"
+              name:
+                $ref: ../../devices/schemas.yaml#/Device/properties/name
+              location:
+                $ref: ../../devices/schemas.yaml#/Device/properties/location
+              device_type:
+                $ref: ../../devices/schemas.yaml#/Device/properties/type
+              template_id:
+                $ref: ../../devices/schemas.yaml#/Device/properties/template
+              actions:
+                description: Device available actions list
+                type: array
+                example:
+                  - "TurnOn"
+                  - "TurnOff"
+                  - "TogglePower"
+                  - "SetSpeed"
+                  - "IncreaseSpeed"
+                  - "DecreaseSpeed"
+              hash:
+                type: string
+                description: Device "_" value
+                example: "f649771b"
+    responses:
+      '201':
+        description: Device Created
+      '404':
+        description: Bond not found
+    security:
+      - internalAPI: []
+    tags:
+      - Devices
+
+
+BondDevicesSync:
+  post:
+    summary: Sync Devices
+    description: |
+      **[Internal API]** `up/devices/` MQTT message.
+      Receives a list of device_ids and remove old shadow devices.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              hash:
+                type: string
+                description: Devices "_" value
+                example: "abdde8c7"
+              devices_ids:
+                type: array
+                description: List of device_ids
+                example:
+                  - "0bdde9c3"
+                  - "0bdde9c2"
+                  - "0bdde9c1"
+    responses:
+      '200':
+        description: Ok
+      '404':
+        description: Bond not found
+    security:
+      - internalAPI: []
+    tags:
+      - Devices
+
+BondDevice:
+  get:
+    summary: Get Device
+    description: |
+      Returns a Bond Device.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: schemas.yaml#/DeviceExpanded
+        description: Bond Device shadow
+      '401':
+        $ref: ../../common/responses.yaml#/Unauthorized
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+  delete:
+    summary: Delete
+    description: |
+      Deletes the device .
+    responses:
+      '204':
+        description: No content
+      '404':
+        description: Bond or Device not found
+      '401':
+        $ref: ../../common/responses.yaml#/Unauthorized
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+
+
+BondDeviceAction:
+  post:
+    summary: Send Device Action
+    description: |
+      Send an action to the Bond
+    parameters:
+      - in: header
+        name: x-wait-reply
+        description: Wait for the bond reply on the action request.
+        schema:
+          type: boolean
+          default: "false"
+        required: false
+      - in: header
+        name: x-bond-down-request-timeout
+        description: Wait reply timeout before returning a HTTP 400 response.
+        schema:
+          type: string
+          default: 3
+        required: false
+      - in: header
+        name: x-bond-request-id
+        description: Unique request ID for deduplication. (16 hex digits)
+        schema:
+          type: string
+          example: '060000ae4795fc0c'
+          default: null
+        required: false
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              arguments:
+                type: string
+                example: "1"
+    responses:
+      '204':
+        description: Sent.
+      '201':
+        description: Sent and received bond reply.
+      '400':
+        description: Wait reply timeout. Bond is unrechable
+      '404':
+        description: Device or action does not exists.
+
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Device
+
+
+
+
+BondDeviceState:
+  get:
+    summary: State
+    description: |
+      Returns the device state.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "../../devices/schemas.yaml#/State"
+      '404':
+        description: Bond or Device not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+  post:
+    summary: Update State
+    description: |
+      **[Internal API]** `up/devices/{device_id}/state` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../../devices/schemas.yaml#/State"
+      '201':
+        description: Updated
+      '404':
+        description: Bond or Device not found
+    security:
+      - internalAPI: []
+    tags:
+      - Device
+
+
+BondDeviceProperties:
+  get:
+    summary: Properties
+    description: |
+      Returns the device properties.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "../../devices/schemas.yaml#/Properties"
+      '404':
+        description: Bond or Device not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+  post:
+    summary: Update Properties
+    description: |
+      **[Internal API]** `up/devices/{device_id}/properties` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../../devices/schemas.yaml#/Properties"
+      '201':
+        description: Updated
+      '404':
+        description: Bond or Device not found
+    security:
+      - internalAPI: []
+    tags:
+      - Device
+
+
+
+BondDeviceCommands:
+  get:
+    summary: Commands List
+    description: |
+      Returns the device commands.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/DeviceCommandsList"
+
+      '404':
+        description: Bond or Device not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+  post:
+    summary: Register Command
+    description: |
+      **[Internal API]** `up/devices/{device_id}/commands/{command_id}` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../../commands/schemas.yaml#/Command"
+      '201':
+        description: Created
+      '404':
+        description: Bond or Device not found
+    security:
+      - internalAPI: []
+    tags:
+      - Device
+
+BondDeviceCommandsSync:
+  post:
+    summary: Commands Sync
+    description: |
+      **[Internal API]** `up/devices/{device_id}/commands` MQTT message.
+      Receives a list of command ids and remove old shadow device commands.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              hash:
+                type: string
+                description: Devices "_" value
+                example: "abdde8c7"
+              skeds_ids:
+                type: array
+                description: List of commands ids
+                example:
+                  - "0bdde9c3"
+                  - "0bdde9c2"
+    responses:
+      '200':
+        description: Ok
+      '404':
+        description: Bond or Device not found
+    security:
+      - internalAPI: []
+    tags:
+      - Device
+
+
+BondDeviceCommand:
+  get:
+    summary: Command
+    description: |
+      Returns device command.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "../../commands/schemas.yaml#/Command"
+
+      '404':
+        description: Bond, Device or command not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+
+
+
+BondDeviceSkeds:
+  get:
+    summary: Skeds List
+    description: |
+      Returns the device schedules.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/DeviceSkedsList"
+
+      '404':
+        description: Bond or Device not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+  post:
+    summary: Register sked
+    description: |
+      **[Internal API]** `up/devices/{device_id}/skeds/{sked_id}` MQTT message.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../../skeds/schemas.yaml#/Sked"
+      '201':
+        description: Updated
+      '404':
+        description: Bond or Device not found
+    security:
+      - internalAPI: []
+    tags:
+      - Device
+
+BondDeviceSkedsSync:
+  post:
+    summary: Skeds Sync
+    description: |
+      **[Internal API]** `up/devices/{device_id}/skeds` MQTT message.
+      Receives a list of skeds_ids and remove old shadow device skeds.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              hash:
+                type: string
+                description: Skeds "_" value
+                example: "abdde8c7"
+              skeds_ids:
+                type: array
+                description: List of skeds ids
+                example:
+                  - "0bdde9c3"
+                  - "0bdde9c2"
+    responses:
+      '200':
+        description: Ok
+      '404':
+        description: Bond or Device not found
+    security:
+      - internalAPI: []
+    tags:
+      - Device
+
+
+BondDeviceSked:
+  get:
+    summary: Sked
+    description: |
+      Returns device sked.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: "../../skeds/schemas.yaml#/Sked"
+
+      '404':
+        description: Bond, Device or sked not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Device
+  delete:
+    summary: Delete Sked
+    description: |
+      **[Internal API]**
+    responses:
+      '204':
+        description: Deleted
+      '404':
+        description: Bond, Device or sked not found
+    security:
+      - internalAPI: []
+    tags:
+      - Device

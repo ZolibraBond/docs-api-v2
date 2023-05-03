@@ -1,8 +1,16 @@
 ---
 title: Bond Cloud API
-version:
-  $ref: ../common/info.yaml#/version
-description:
-  $ref: ../common/info.yaml#/description
+version: "v2.0.143"
 x-logo:
-  url: https://s3.amazonaws.com/bond-api-docs/bond.png
+  url: https://s3.amazonaws.com/docs-cloud.appbond.com/bond.png
+description: |
+  ## Cloud and Internal API  
+  **Cloud API**
+    - https://xd27596oej.execute-api.us-east-1.amazonaws.com/v2/  
+    Exposed on the internet, with [AWS Api Gateway](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/apis/xd27596oej/resources/ivbnya9xy3)  
+
+  **Internal API**
+  - http://nlb-bond-v2-api-ec09574b2a7dbfdd.elb.us-east-1.amazonaws.com: 8080/8888  
+  Accessible only inside our AWS VPC.
+    
+    

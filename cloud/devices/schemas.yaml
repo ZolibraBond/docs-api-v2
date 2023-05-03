@@ -1,0 +1,42 @@
+DeviceExpandedList:
+  type: object
+  properties:
+    _:
+      type: string
+      example: "1acde7c4"
+    001ab23:
+      $ref: "#/DeviceExpanded"
+
+
+DeviceExpanded:
+  allOf:
+    - $ref: "../../devices/schemas.yaml#/Device"
+    - type: object
+      properties:
+        properties:
+          $ref: "../../devices/schemas.yaml#/Properties"
+        state:
+          $ref: "../../devices/schemas.yaml#/State"
+        commands:
+          $ref: "#/DeviceCommandsList"
+        skeds:
+          $ref: "#/DeviceSkedsList"
+
+
+DeviceCommandsList:
+  type: object
+  properties:
+    _:
+      type: string
+      example: "0bdde9c3"
+    2310abc:
+      $ref: "../../commands/schemas.yaml#/Command"
+
+DeviceSkedsList:
+  type: object
+  properties:
+    _:
+      type: string
+      example: "1bdde9c4"
+    2310abc:
+      $ref: "../../skeds/schemas.yaml#/Sked"

@@ -1,0 +1,79 @@
+Oneclick:
+  post:
+    summary: Detect
+    description: |
+      Oneclick remote detection. Receives signal information and returns matching temporary cloud devices that can be tested.
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: schemas.yaml#/OneclickDetect
+    responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                1234-5678-9012:
+                  $ref: schemas.yaml#/OneclickTestRemote
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Oneclick
+
+OneclickRemote:
+  get:
+    summary: Get Test Device
+    description: |
+      Returns test device created on detection process.
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: schemas.yaml#/OneclickTestRemote
+
+      '404':
+        description: Not found
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+      - internalAPI: []
+    tags:
+      - Oneclick
+
+
+OneclickRemoteAction:
+  post:
+    summary: Test Device Action
+    description: |
+      Send an action to the Bond.
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              arguments:
+                type: string
+                example: "1"
+    responses:
+      '201':
+        description: Sent. Updated State
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                - power: 1
+                - light: 0
+    security:
+      - bearerAuth: []
+      - tokenAuth: []
+    tags:
+      - Oneclick
+
